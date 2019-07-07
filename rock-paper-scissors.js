@@ -1,28 +1,6 @@
 // Rock-Paper-Scissors Game
 let playerScore = 0;
 let computerScore = 0;
-const testWin = /win/;
-const testLose = /lose/;
-const testDraw = /draw/;
-const playerTile = document.querySelector('.player-score');
-const computerTile = document.querySelector('.computer-score');
-const gameInfo = document.querySelector('#game-info');
-const outcome = document.createElement('h3');
-const playerPoints = document.createElement('h3');
-const computerPoints = document.createElement('h3');
-let playerSelection = '';
-const youWin = document.createElement('h3');
-const youLose = document.createElement('h3');
-
-const playRound = (playerSelection, computerSelection) => {
-  if (playerSelection === 'rock' && computerSelection === 'scissors' ||
-        playerSelection === 'scissors' && computerSelection === 'paper' ||
-        playerSelection === 'paper' && computerSelection === 'rock') {
-    return `You win! ${playerSelection} beats ${computerSelection}`;
-  } else if (playerSelection === computerSelection) {
-    return 'It\'s a draw! No winner';
-  } else return `You lose! ${computerSelection} beats ${playerSelection}`;
-};
 
 // Randomly generated computer choice
 const getComputerChoice = () => {
@@ -30,52 +8,84 @@ const getComputerChoice = () => {
   return ranNum === 0 ? 'rock' : ranNum === 1 ? 'paper' : 'scissors';
 };
 
-const validateWinner = (result) => {
-  if (testDraw.test(result)) {
-    return;
-  } else if (testWin.test(result)) {
+// Checks game state
+const isGameFinished = (playerScore, computerScore) => {
+  return playerScore > 4 ? true : computerScore > 4 ? true : false;
+};
+
+// Plays single round of game
+const playRound = (playerSelection, computerSelection) => {
+  if (playerSelection === 'rock' && computerSelection === 'scissors' ||
+      playerSelection === 'scissors' && computerSelection === 'paper' ||
+      playerSelection === 'paper' && computerSelection === 'rock') {
     playerScore += 1;
-  } else if (testLose.test(result)) {
+    return `You win! ${playerSelection} beats ${computerSelection}`;
+  } else if (playerSelection === computerSelection) {
+    return 'It\'s a draw! No winner';
+  } else {
     computerScore += 1;
+    return `You lose! ${computerSelection} beats ${playerSelection}`;
+  };
+};
+
+const playerTile = document.querySelector('.player-score');
+const computerTile = document.querySelector('.computer-score');
+const gameInfo = document.querySelector('#game-info');
+const outcome = document.createElement('h3');
+const playerPoints = document.createElement('h3');
+const computerPoints = document.createElement('h3');
+const youWin = document.createElement('h3');
+const youLose = document.createElement('h3');
+
+const updatePoints = () => {
+  playerPoints.textContent = playerScore;
+  playerTile.appendChild(playerPoints);
+
+  computerPoints.textContent = computerScore;
+  computerTile.appendChild(computerPoints);
+};
+
+const displayOutcome = () => {
+  outcome.textContent = playRound(playerSelection, getComputerChoice());
+  gameInfo.appendChild(outcome);
+};
+
+const playerWins = () => {
+  youWin.textContent = `You win! ${playerScore} : ${computerScore}`;
+  gameInfo.appendChild(youWin);
+};
+
+const computerWins = () => {
+  youLose.textContent = `You lose! ${playerScore} : ${computerScore}`;
+  gameInfo.appendChild(youLose);
+};
+
+const resetScores = () => {
+  playerScore = 0;
+  computerScore = 0;
+};
+
+const startRound = () => {
+  displayOutcome();
+  updatePoints();
+  if (isGameFinished(playerScore, computerScore)) {
+    if (playerScore > computerScore) {
+      playerWins();
+      resetScores();
+    } else {
+      computerWins();
+      resetScores();
+    }
   }
 };
 
-const displayWinner = (playerScore, computerScore) => {
-  if (playerScore === 5) {
-    youWin.textContent = `You win! ${playerScore} : ${computerScore}`;
-    gameInfo.appendChild(youWin);
-  } else if (computerScore === 5) {
-    youLose.textContent = `You lose! ${playerScore} : ${computerScore}`;
-    gameInfo.appendChild(youLose);
-  }
-};
-
+updatePoints();
 
 const buttons = document.querySelectorAll('button');
 // add event listener on click
 buttons.forEach((button) => {
+  playerSelection = button.id;
   button.addEventListener('click', (e) => {
-    playerSelection = button.id;
-
-    const result = playRound(playerSelection, getComputerChoice());
-
-    validateWinner(result);
-
-    displayWinner(playerScore, computerScore);
-
-    outcome.textContent = result;
-    gameInfo.appendChild(outcome);
-
-    playerPoints.textContent = playerScore;
-    playerTile.appendChild(playerPoints);
-
-    computerPoints.textContent = computerScore;
-    computerTile.appendChild(computerPoints);
+    startRound();
   });
 });
-
-playerPoints.textContent = playerScore;
-playerTile.appendChild(playerPoints);
-
-computerPoints.textContent = computerScore;
-computerTile.appendChild(computerPoints);
