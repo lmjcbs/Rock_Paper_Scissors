@@ -9,22 +9,30 @@
 </head>
 <body>
   <div class="container">
-    <div class="ui">
 
+    <div class="ui">
       <h1 class="main-header">Rock Paper Scissors Game</h1>
       <div id="game-info">
           <h2>Play against the computer and be the first to reach 5 points!</h2>
+          <h2 id="round-outcome"></h2>
       </div>
       <div class="scoreboard">
-          <div class="score-tile player-score">Player Score</div>
-          <div class="score-tile computer-score">Computer Score</div>
+          <div class="score-tile">Player Score
+            <h2 id="player-score"></h2>
+          </div>
+          <div class="score-tile">Computer Score
+            <h2 id="computer-score"></h2>
+          </div>
       </div>
       <div class="control-panel">
         <button id="rock">Rock</button>
         <button id="paper">Paper</button>
         <button id="scissors">Scissors</button>    
       </div>
-      
+      <div id="game-end-panel">
+        <h2 id="result"></h2>
+        <button id="reset">Reset</button>
+      </div>
     </div>
   </div>
 

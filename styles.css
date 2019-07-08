@@ -6,7 +6,7 @@ html {
 body,html {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .container{
@@ -21,7 +21,7 @@ body,html {
   display: block;
   align-content: center;
   justify-content: center;
-  box-shadow: 0.5rem 0.5rem rgba(53, 53, 53, 0.534);;
+  box-shadow: 0.5rem 0.5rem rgba(53, 53, 53, 0.534);
   border-radius: 0.75rem;
   background-color: whitesmoke;
 }
@@ -49,6 +49,7 @@ body,html {
   margin: 1.5rem;
   border:  rgb(87, 255, 213) solid 0.25rem;
   border-radius: 1rem;
+  box-shadow: 0.5rem 0.5rem rgba(53, 53, 53, 0.534);
   min-height: 5rem;
   font-size: 2rem;
 }
@@ -56,22 +57,31 @@ body,html {
 h2 {
   padding: 1rem;
   text-align: center;
+  min-height: 2rem;
 }
 
-h3 {
-  font-size: 1.5rem;
-  padding: 1rem;
-  text-align: center;
-}
 button {
   border: none;
   color: rgb(0, 0, 0);
-  background-color:  rgb(87, 255, 213);
+  background-color: whitesmoke;
+  border: solid rgb(87, 255, 213) 0.25rem;
+  box-shadow: 0.25rem 0.25rem rgba(53, 53, 53, 0.534);
   padding: 1rem 1.5rem;
   margin: 2rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 1.5rem;
+  font-size: 2rem;
   border-radius: 1rem;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#reset {
+  opacity: 0;
+}
+
+#game-end-panel {
+  display: flexbox;
+  text-align: center;
+  justify-content: center;
 }

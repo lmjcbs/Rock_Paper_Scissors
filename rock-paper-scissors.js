@@ -15,9 +15,9 @@ const isGameFinished = (playerScore, computerScore) => {
 
 // Plays single round of game
 const playRound = (playerSelection, computerSelection) => {
-  if (playerSelection === 'rock' && computerSelection === 'scissors' ||
-      playerSelection === 'scissors' && computerSelection === 'paper' ||
-      playerSelection === 'paper' && computerSelection === 'rock') {
+  if ((playerSelection === 'rock' && computerSelection === 'scissors') ||
+      (playerSelection === 'scissors' && computerSelection === 'paper') ||
+      (playerSelection === 'paper' && computerSelection === 'rock')) {
     playerScore += 1;
     return `You win! ${playerSelection} beats ${computerSelection}`;
   } else if (playerSelection === computerSelection) {
@@ -28,64 +28,61 @@ const playRound = (playerSelection, computerSelection) => {
   };
 };
 
-const playerTile = document.querySelector('.player-score');
-const computerTile = document.querySelector('.computer-score');
-const gameInfo = document.querySelector('#game-info');
-const outcome = document.createElement('h3');
-const playerPoints = document.createElement('h3');
-const computerPoints = document.createElement('h3');
-const youWin = document.createElement('h3');
-const youLose = document.createElement('h3');
-
 const updatePoints = () => {
+  const playerPoints = document.querySelector('#player-score');
+  const computerPoints = document.querySelector('#computer-score');
   playerPoints.textContent = playerScore;
-  playerTile.appendChild(playerPoints);
-
   computerPoints.textContent = computerScore;
-  computerTile.appendChild(computerPoints);
 };
 
-const displayOutcome = () => {
-  outcome.textContent = playRound(playerSelection, getComputerChoice());
-  gameInfo.appendChild(outcome);
+const roundOutcome = document.querySelector('#round-outcome');
+
+const displayRoundOutcome = () => roundOutcome.textContent =
+    playRound(playerSelection, getComputerChoice());
+
+const displayGameOutcome = () => {
+  disablePlayerSelection();
+  reset.style.opacity = 1;
+  playerScore > computerScore ? playerWins() : computerWins();
 };
 
-const playerWins = () => {
-  youWin.textContent = `You win! ${playerScore} : ${computerScore}`;
-  gameInfo.appendChild(youWin);
-};
+const result = document.querySelector('#result');
 
-const computerWins = () => {
-  youLose.textContent = `You lose! ${playerScore} : ${computerScore}`;
-  gameInfo.appendChild(youLose);
-};
+const playerWins = () => result.textContent = `You win! ${playerScore} :
+    ${computerScore}`;
 
-const resetScores = () => {
-  playerScore = 0;
-  computerScore = 0;
-};
+const computerWins = () => result.textContent = `You lose! ${playerScore} :
+    ${computerScore}`;
 
 const startRound = () => {
-  displayOutcome();
+  displayRoundOutcome();
   updatePoints();
   if (isGameFinished(playerScore, computerScore)) {
-    if (playerScore > computerScore) {
-      playerWins();
-      resetScores();
-    } else {
-      computerWins();
-      resetScores();
-    }
+    displayGameOutcome();
   }
 };
 
-updatePoints();
-
 const buttons = document.querySelectorAll('button');
+
+const disablePlayerSelection = () => {
+  buttons.forEach((button) => {
+    button.disabled = true;
+    reset.disabled = false;
+  });
+};
+
 // add event listener on click
 buttons.forEach((button) => {
-  playerSelection = button.id;
   button.addEventListener('click', (e) => {
+    playerSelection = button.id;
     startRound();
   });
 });
+
+const reset = document.querySelector('#reset');
+
+reset.addEventListener('click', (e) => {
+  window.location.reload();
+});
+
+updatePoints();
